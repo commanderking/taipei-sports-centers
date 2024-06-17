@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+beautifulsoup4 = "*"
+requests-html = "*"
+lxml-html-clean = "*"
+pandas = "*"
+boto3 = "*"
+polars = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
+python_full_version = "3.9.17"
