@@ -11,8 +11,12 @@ lxml-html-clean = "*"
 pandas = "*"
 boto3 = "*"
 polars = "*"
+matplotlib = "*"
 
 [dev-packages]
+
+[scripts]
+"download_s3 =" = "aws s3 sync s3://taipeisportsarena s3_data"
 
 [requires]
 python_version = "3.9"

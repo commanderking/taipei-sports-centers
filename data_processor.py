@@ -3,11 +3,10 @@ import polars as pl
 import glob
 
 DATA_DIRECTORY = "./s3_data"
-
 def find_json_files(directory):
     return glob.glob(f"{directory}/**/*.json", recursive=True)
 
-def read_and_concatenate_json_files(directory, column_types):
+def read_and_concatenate_json_files(directory):
     json_files = find_json_files(directory)
     df_list = [pl.read_json(file) for file in json_files]
     combined_df = pl.concat(df_list)
@@ -18,23 +17,23 @@ def read_and_concatenate_json_files(directory, column_types):
     )
     return combined_df
 def convert_to_csv(): 
-    column_types = {
-        "datetime": pl.Datetime,  # Example: casting 'datetime' column to Datetime type
-        "swimmers": pl.Int32,     # Example: casting 'swimmers' column to Int32 type
-        "gymmers": pl.Int32,      # Example: casting 'gymmers' column to Int32 type
-        "gymmers:": pl.Int32      # Example: casting 'gymmers:' column to Int32 type
-    }
     # Read and concatenate JSON files, and cast columns to specified types
-    combined_df = read_and_concatenate_json_files(DATA_DIRECTORY, column_types)
+    combined_df = read_and_concatenate_json_files(DATA_DIRECTORY)
+    combined_df.write_csv("./output/combined_data.csv")
     
-    print(combined_df)
+    unique_centers = combined_df['center'].unique()
+    
+    for center in unique_centers:
+        df = combined_df.filter(pl.col("center") == center)
+        df.write_csv(f'./output/{center}.csv')
 
-    # Combine 'gymmers' and 'gymmers:' columns
-    combined_df = combined_df.with_columns(
-        pl.coalesce([pl.col("gymmers").cast(pl.Int32), pl.col("gymmers:").cast(pl.Int32)]).alias("gymmers")
-    )
-
-    print(df)
+    
+    # zhongshan_df = combined_df.filter(pl.col("center") == "ZSSC")
+    # zhongshan_df.write_csv("./output/ZSSC.csv")
+    
+    # datong_df = combined_df.filter(pl.col("center") == "DTSC")
+    # datong_df.write_csv('./output/DTSC.csv')
+    
     
     # df = pl.scan_ndjson('./s3_data/year=2024/*.json')
     
