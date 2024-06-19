@@ -1,3 +1,5 @@
 layer-headless_chrome
 python
 s3_data
+.DS_STORE
+output
