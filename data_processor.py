@@ -25,20 +25,7 @@ def convert_to_csv():
     
     for center in unique_centers:
         df = combined_df.filter(pl.col("center") == center)
-        df.write_csv(f'./output/{center}.csv')
-
-    
-    # zhongshan_df = combined_df.filter(pl.col("center") == "ZSSC")
-    # zhongshan_df.write_csv("./output/ZSSC.csv")
-    
-    # datong_df = combined_df.filter(pl.col("center") == "DTSC")
-    # datong_df.write_csv('./output/DTSC.csv')
-    
-    
-    # df = pl.scan_ndjson('./s3_data/year=2024/*.json')
-    
-    # print(df)
-    
+        df.write_csv(f'./output/{center}.csv')    
 
 if __name__ == "__main__":
     convert_to_csv()
